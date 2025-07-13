@@ -1,0 +1,35 @@
+# Dockerfile.dev - 開發環境專用
+FROM python:3.11-slim-buster
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+WORKDIR /app
+
+# 安裝基本系統依賴
+RUN apt-get update && apt-get install -y \
+    gcc \
+    build-essential \
+    libffi-dev \
+    libssl-dev \
+    netcat \
+    && rm -rf /var/lib/apt/lists/*
+
+# 複製並安裝 Python 依賴
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 安裝開發依賴
+RUN pip install --no-cache-dir \
+    django-debug-toolbar \
+    django-extensions \
+    ipython
+
+# 複製專案文件
+COPY . /app/
+
+# 開放端口
+EXPOSE 8000
+
+# 開發環境使用 Django 開發伺服器
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"] 

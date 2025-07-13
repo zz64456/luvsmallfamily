@@ -1,0 +1,58 @@
+# docker-compose.dev.yml - 開發環境專用
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # 使用 Django 開發伺服器而非 gunicorn
+    command: sh -c "chmod +x /app/wait-for-mysql.sh && /app/wait-for-mysql.sh"
+    volumes:
+      - .:/app
+      # Windows 路徑映射優化
+      - /app/luvsmallfamily/__pycache__
+      - /app/.git
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mysql://user:password@db:3306/mydatabase
+      - SECRET_KEY=dev-secret-key-not-for-production
+      - DEBUG=True
+      - ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+    env_file:
+      - .env
+    # 開發環境重新啟動策略
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+    ports:
+      # 開放資料庫端口供本地連接
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=mydatabase
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+    restart: unless-stopped
+
+  # 可選：添加 Redis 用於快取或 Celery
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+volumes:
+  mysql_data_dev: 
