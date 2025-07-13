@@ -12,11 +12,12 @@ services:
     depends_on:
       - db
     environment:
-      - DATABASE_URL=mysql://user:password@db:3306/mydatabase # 替換為你的資料庫資訊
-      - SECRET_KEY=your_secret_key # Django SECRET_KEY
-      - DEBUG=True # 生產環境務必設定為 False
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG:-False}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
     env_file:
-      - .env # 也可以使用 .env 檔案來管理環境變數
+      - .env
 
   db:
     image: mysql:8.0
@@ -24,10 +25,12 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=mydatabase
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    env_file:
+      - .env
 
 volumes:
   mysql_data:

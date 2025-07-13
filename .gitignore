@@ -1,0 +1,106 @@
+# 環境變數文件（包含敏感資訊）
+.env
+.env.local
+.env.production
+.env.development
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# If you are using PyCharm
+.idea/
+
+# If you are using VS Code
+.vscode/
+
+# If you are using Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# 虛擬環境
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Docker
+docker-compose.override.yml
+
+# 測試覆蓋率
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# 暫存文件
+*.tmp
+*.temp
+
+# 資料庫備份
+*.sql
+*.dump
+
+# SSL 憑證
+*.pem
+*.key
+*.crt
+
+# 密鑰和憑證
+secrets/
+credentials/ 

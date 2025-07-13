@@ -28,12 +28,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-(f5x_*l*(92^njiixyju5$=z&5i8pe3ly25w6bj0)o#l8uo(ai')
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    if os.environ.get('DEBUG', 'False').lower() == 'true':
+        SECRET_KEY = 'dev-secret-key-not-for-production'
+    else:
+        raise ValueError('SECRET_KEY environment variable is required for production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else ['*']
+ALLOWED_HOSTS = []
+if os.environ.get('ALLOWED_HOSTS'):
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+elif DEBUG:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 
 # Application definition
@@ -167,6 +176,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 安全性設定
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# 生產環境額外的安全設定
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False').lower() == 'true'
+    SECURE_HSTS_SECONDS = int(os.environ.get('SECURE_HSTS_SECONDS', '31536000'))
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 # Debug Toolbar 配置（僅在開發環境）
 if DEBUG:
