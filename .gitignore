@@ -64,6 +64,12 @@ env/
 ENV/
 env.bak/
 venv.bak/
+# Custom for this project to ignore misplaced venv
+/luvsmallfamily/Lib/
+/luvsmallfamily/Scripts/
+/luvsmallfamily/Include/
+/luvsmallfamily/pyvenv.cfg
+
 
 # Docker
 docker-compose.override.yml

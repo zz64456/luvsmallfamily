@@ -24,8 +24,9 @@ def home(request):
     return HttpResponse("歡迎來到 luvsmallfamily 網站！")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('linebot/', include('linebot.urls')),
 ]
 
 # 開發環境中加入 Debug Toolbar 的 URL

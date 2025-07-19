@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# 載入 .env 檔案
+load_dotenv()
 
 # 使用 PyMySQL 作為 MySQL 後端
 try:
@@ -29,6 +33,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
+
+# print('SECRET_KEY', SECRET_KEY)
+# exit()
+
 if not SECRET_KEY:
     if os.environ.get('DEBUG', 'False').lower() == 'true':
         SECRET_KEY = 'dev-secret-key-not-for-production'
