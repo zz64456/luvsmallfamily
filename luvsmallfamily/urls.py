@@ -2,7 +2,7 @@
 URL configuration for luvsmallfamily project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.2/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -26,7 +26,8 @@ def home(request):
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('linebot/', include('linebot.urls')),
+    path('blog/', include('blog.urls')), # 啟用 blog app 的 URLs
+    # path('linebot/', include('linebot.urls')),
 ]
 
 # 開發環境中加入 Debug Toolbar 的 URL

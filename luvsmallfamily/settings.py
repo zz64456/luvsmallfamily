@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'blog', # 新增 blog app
+    'rest_framework', # For RESTful APIs
 ]
 
 # 開發環境額外的應用
@@ -180,6 +182,33 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Logging Configuration
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "linebot_file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "logs/linebot.log", # Log file will be in <project_root>/logs/
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "linebot": { # This is for your 'linebot' app
+            "handlers": ["linebot_file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
 
 # 安全性設定
 SECURE_BROWSER_XSS_FILTER = True

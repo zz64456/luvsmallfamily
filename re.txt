@@ -2,7 +2,6 @@
 Django>=5.0,<6.0
 dj_database_url>=2.0,<3.0
 python-dotenv>=1.0,<2.0
-djangorestframework>=3.14,<3.15 # For RESTful APIs
 
 # Database Driver
 PyMySQL>=1.1,<1.2
