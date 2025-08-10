@@ -23,23 +23,26 @@ class Command(BaseCommand):
         
         posts = [post1, post2, post3]
         for post in posts:
+            # Text comment
             Comment.objects.create(
                 post=post,
                 comment_date=datetime.date(2023, 8, 9),
-                text=comment_text,
-                image_url=image_url
+                comment_type='text',
+                text='這是一則純文字的留言。'
             )
+            # Image comment
             Comment.objects.create(
                 post=post,
                 comment_date=datetime.date(2023, 8, 8),
-                text=comment_text,
-                image_url=image_url
+                comment_type='image',
+                image_url='https://kcsaa.org.tw/images/KCSAA/receipt/2009/2009-04-2.jpg'
             )
+            # Another text comment
             Comment.objects.create(
                 post=post,
                 comment_date=datetime.date(2023, 8, 7),
-                text=comment_text,
-                image_url=image_url
+                comment_type='text',
+                text='這是另一則純文字的測試留言。'
             )
         
         self.stdout.write(self.style.SUCCESS('Successfully seeded database!'))

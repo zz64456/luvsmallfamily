@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的部落格</title>
+    <title>朝日計畫</title>
     <!-- 引入 Swiper.js 的 CSS -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
     <style>
@@ -13,7 +13,7 @@
             background-color: #f4f4f4;
         }
         .container {
-            max-width: 800px;
+            max-width: 85%;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
@@ -24,15 +24,25 @@
             color: #333;
         }
         .post {
+            display: flex; /* 改為 Flexbox 佈局 */
+            gap: 20px; /* 左右區塊間距 */
             margin-bottom: 40px;
             border-bottom: 1px solid #eee;
             padding-bottom: 20px;
             overflow: hidden;
+        }
+        .post-media {
+            width: 100%;
+            flex: 0 0 50%; /* 左側區域固定寬度 40% */
             cursor: pointer;
+            overflow: hidden; /* 確保輪播內容不會溢出到右側區塊 */
+        }
+        .post-content {
+            flex: 1; /* 右側區域佔據剩餘空間 */
         }
         .swiper-container {
             width: 100%;
-            height: 500px;
+            height: 300px; /* 稍微縮小圖片高度 */
             margin-bottom: 15px;
             position: relative;
         }
@@ -40,44 +50,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0;
         }
         .swiper-slide img {
             max-height: 100%;
             max-width: 100%;
             object-fit: cover;
         }
-        .post p {
+        .post-content p {
             color: #666;
             line-height: 1.6;
         }
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.6);
-        }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 8px;
-            position: relative;
-        }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
+
+        /* 移除 Modal 相關樣式，因為不再需要彈窗 */
+        
+        /* Accordion (手風琴) 樣式 - 直接放在右側 */
+        .comment-section {
+            margin-top: 20px;
         }
         .accordion-item .accordion-header {
             background-color: #f1f1f1;
@@ -104,16 +92,39 @@
         .accordion-content img {
             max-width: 100%;
             margin-top: 15px;
+            cursor: pointer; /* 提示圖片可以點擊 */
+        }
+
+        /* Image Lightbox Styles */
+        #image-lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000; /* 要在最上層 */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #image-lightbox img {
+            max-width: 90%;
+            max-height: 90%;
         }
     </style>
 </head>
 <body>
     <div class="container" id="post-container">
-        <h1>我的部落格</h1>
+        <h1>朝日計畫</h1>
         <!-- Posts will be dynamically inserted here -->
     </div>
 
-    <!-- Modal container will be appended to the body -->
+    <!-- Lightbox for comment images -->
+    <div id="image-lightbox">
+        <img src="" alt="放大的留言圖片">
+    </div>
 
     <!-- 引入 Swiper.js 的 JS -->
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -122,33 +133,37 @@
         document.addEventListener('DOMContentLoaded', function () {
             const postContainer = document.getElementById('post-container');
 
-            // Fetch posts from the API
             fetch('/blog/api/posts/')
                 .then(response => response.json())
                 .then(posts => {
                     posts.forEach((post, index) => {
-                        const postIndex = index + 1;
-                        
-                        // Create Post Element
                         const postElement = document.createElement('div');
                         postElement.className = 'post';
-                        postElement.setAttribute('data-modal-target', `#modal-${postIndex}`);
-                        postElement.innerHTML = `
-                            ${createSwiperHTML(post.image_urls, postIndex)}
-                            <p>${post.text}</p>
-                        `;
+                        postElement.innerHTML = createPostHTML(post, index + 1);
                         postContainer.appendChild(postElement);
-
-                        // Create Modal Element
-                        const modalElement = document.createElement('div');
-                        modalElement.id = `modal-${postIndex}`;
-                        modalElement.className = 'modal';
-                        modalElement.innerHTML = createModalHTML(post.comments);
-                        document.body.appendChild(modalElement);
                     });
                     
-                    initializePageLogic();
+                    // Defer initialization to the next event loop tick
+                    setTimeout(initializePageLogic, 0);
                 });
+
+            function createPostHTML(post, postIndex) {
+                const swiperHTML = createSwiperHTML(post.image_urls, postIndex);
+                const commentsHTML = createCommentsHTML(post.comments);
+
+                return `
+                    <div class="post-media" data-post-id="${post.id}">
+                        ${swiperHTML}
+                    </div>
+                    <div class="post-content">
+                        <p>${post.text}</p>
+                        <div class="comment-section">
+                            <h3>留言區</h3>
+                            <div class="accordion">${commentsHTML}</div>
+                        </div>
+                    </div>
+                `;
+            }
 
             function createSwiperHTML(imageUrls, postIndex) {
                 if (imageUrls.length > 1) {
@@ -169,23 +184,16 @@
                 return '';
             }
 
-            function createModalHTML(comments) {
-                const commentItems = comments.map(comment => `
+            function createCommentsHTML(comments) {
+                return comments.map(comment => `
                     <div class="accordion-item">
                         <button class="accordion-header">${new Date(comment.comment_date).toLocaleDateString('en-CA')} 留言</button>
                         <div class="accordion-content">
-                            <p>${comment.text}</p>
-                            <img src="${comment.image_url}" alt="費用明細圖片">
+                            ${comment.comment_type === 'text' ? `<p>${comment.text}</p>` : ''}
+                            ${comment.comment_type === 'image' ? `<img src="${comment.image_url}" class="comment-image" alt="留言圖片">` : ''}
                         </div>
                     </div>
                 `).join('');
-
-                return `
-                    <div class="modal-content">
-                        <span class="close-btn">&times;</span>
-                        <h2>文章留言</h2>
-                        <div class="accordion">${commentItems}</div>
-                    </div>`;
             }
 
             function initializePageLogic() {
@@ -194,39 +202,22 @@
                     const container = post.querySelector('.swiper-container:not(.single-image)');
                     if (container) {
                         new Swiper(`#swiper-container-${index + 1}`, {
-                            slidesPerView: 1, spaceBetween: 10, loop: true, grabCursor: true,
+                            observer: true,
+                            observeParents: true,
+                            slidesPerView: 1, 
+                            spaceBetween: 10, 
+                            loop: true, 
+                            grabCursor: true,
                             pagination: { el: `.swiper-pagination-${index + 1}`, clickable: true },
                             navigation: { nextEl: `.swiper-button-next-${index + 1}`, prevEl: `.swiper-button-prev-${index + 1}` },
                         });
                     }
                 });
 
-                // Initialize Modals
-                document.querySelectorAll('.post').forEach(post => {
-                    post.addEventListener('click', event => {
-                        if (event.target.closest('.swiper-button-next') || event.target.closest('.swiper-button-prev')) return;
-                        const modal = document.querySelector(post.dataset.modalTarget);
-                        if (modal) {
-                            modal.style.display = 'block';
-                            const firstAccordionItem = modal.querySelector('.accordion-item');
-                            if (firstAccordionItem && !firstAccordionItem.classList.contains('active')) {
-                                firstAccordionItem.querySelector('.accordion-header').click();
-                            }
-                        }
-                    });
-                });
-
-                document.querySelectorAll('.modal .close-btn').forEach(btn => {
-                    btn.addEventListener('click', () => btn.closest('.modal').style.display = 'none');
-                });
-                
-                window.addEventListener('click', event => {
-                    if (event.target.classList.contains('modal')) event.target.style.display = 'none';
-                });
-
                 // Initialize Accordions
                 document.querySelectorAll('.accordion').forEach(accordion => {
-                    accordion.querySelectorAll('.accordion-item').forEach(item => {
+                    const items = accordion.querySelectorAll('.accordion-item');
+                    items.forEach(item => {
                         item.querySelector('.accordion-header').addEventListener('click', () => {
                             const currentlyActive = accordion.querySelector('.accordion-item.active');
                             if (currentlyActive && currentlyActive !== item) {
@@ -238,6 +229,32 @@
                             content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
                         });
                     });
+
+                    // Open the first item (newest) by default
+                    const firstItem = items[0];
+                    if (firstItem) {
+                        firstItem.classList.add('active');
+                        const content = firstItem.querySelector('.accordion-content');
+                        // Use a small timeout to ensure the browser has rendered the element before calculating scrollHeight
+                        setTimeout(() => {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                        }, 100);
+                    }
+                });
+
+                // Initialize Comment Image Lightbox
+                const lightbox = document.getElementById('image-lightbox');
+                const lightboxImage = lightbox.querySelector('img');
+
+                document.querySelectorAll('.comment-image').forEach(image => {
+                    image.addEventListener('click', () => {
+                        lightboxImage.src = image.src;
+                        lightbox.style.display = 'flex';
+                    });
+                });
+
+                lightbox.addEventListener('click', () => {
+                    lightbox.style.display = 'none';
                 });
             }
         });

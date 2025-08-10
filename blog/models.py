@@ -13,8 +13,9 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     comment_date = models.DateField()
-    text = models.CharField(max_length=200)
-    image_url = models.URLField()
+    comment_type = models.CharField(max_length=10, choices=[('text', 'Text'), ('image', 'Image')], default='text')
+    text = models.CharField(max_length=200, blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
