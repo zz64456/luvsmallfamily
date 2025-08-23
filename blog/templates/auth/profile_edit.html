@@ -1,0 +1,46 @@
+{% extends 'auth/base_auth.html' %}
+
+{% block title %}編輯個人資料 - 朝日計畫{% endblock %}
+{% block subtitle %}更新您的個人資訊{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.first_name.id_for_label }}">姓名</label>
+            {{ form.first_name }}
+            {% if form.first_name.errors %}
+                <div class="form-errors">{{ form.first_name.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.last_name.id_for_label }}">姓氏（可選）</label>
+            {{ form.last_name }}
+            {% if form.last_name.errors %}
+                <div class="form-errors">{{ form.last_name.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.email.id_for_label }}">電子郵件</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="form-errors">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        
+        {% if form.non_field_errors %}
+            <div class="form-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+        
+        <button type="submit" class="btn-primary">
+            💾 保存變更
+        </button>
+    </form>
+    
+    <div class="auth-links">
+        <a href="{% url 'auth:profile' %}">← 返回個人資料</a>
+    </div>
+{% endblock %}

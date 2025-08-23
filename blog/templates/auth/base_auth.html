@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}朝日計畫{% endblock %}</title>
+    <style>
+        :root {
+            --warm-orange: 32 97% 60%;
+            --warm-orange-light: 32 97% 70%;
+            --warm-orange-dark: 32 97% 50%;
+            --warm-orange-pale: 32 50% 95%;
+            --warm-peach: 25 100% 85%;
+            --warm-cream: 45 100% 97%;
+            --soft-pink: 350 100% 95%;
+            --text-dark: 20 20% 20%;
+            --text-medium: 20 15% 40%;
+            --text-light: 20 10% 60%;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, hsl(var(--warm-cream)) 0%, hsl(var(--soft-pink)) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: hsl(var(--text-dark));
+        }
+        
+        .auth-container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px hsla(var(--warm-orange), 0.2);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,255,255,0.5);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, hsl(var(--warm-orange)), hsl(var(--warm-orange-light)));
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .logo-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: hsl(var(--warm-orange-dark));
+            margin-bottom: 8px;
+        }
+        
+        .logo-subtitle {
+            color: hsl(var(--text-medium));
+            font-size: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: hsl(var(--text-dark));
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid hsla(var(--warm-orange), 0.2);
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+            color: hsl(var(--text-dark));
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: hsl(var(--warm-orange));
+            box-shadow: 0 0 0 3px hsla(var(--warm-orange), 0.1);
+            background: white;
+        }
+        
+        .form-input::placeholder {
+            color: hsl(var(--text-light));
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, hsl(var(--warm-orange)) 0%, hsl(var(--warm-orange-light)) 100%);
+            color: white;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            box-shadow: 0 6px 20px hsla(var(--warm-orange), 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px hsla(var(--warm-orange), 0.4);
+            background: linear-gradient(135deg, hsl(var(--warm-orange-dark)) 0%, hsl(var(--warm-orange)) 100%);
+        }
+        
+        .auth-links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid hsla(var(--warm-orange), 0.2);
+        }
+        
+        .auth-links a {
+            color: hsl(var(--warm-orange-dark));
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+        
+        .auth-links a:hover {
+            color: hsl(var(--warm-orange));
+        }
+        
+        .messages {
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .message.success {
+            background: hsla(120, 60%, 70%, 0.2);
+            color: hsl(120, 60%, 30%);
+            border: 1px solid hsla(120, 60%, 70%, 0.3);
+        }
+        
+        .message.error {
+            background: hsla(0, 60%, 70%, 0.2);
+            color: hsl(0, 60%, 40%);
+            border: 1px solid hsla(0, 60%, 70%, 0.3);
+        }
+        
+        .form-errors {
+            margin-top: 8px;
+        }
+        
+        .form-errors ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .form-errors li {
+            color: hsl(0, 60%, 50%);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 20px;
+                padding: 30px 25px;
+            }
+            
+            .logo-title {
+                font-size: 1.7rem;
+            }
+            
+            .logo-icon {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo-section">
+            <span class="logo-icon">☀️</span>
+            <h1 class="logo-title">朝日計畫</h1>
+            <p class="logo-subtitle">{% block subtitle %}給流浪動物一個溫暖的家{% endblock %}</p>
+        </div>
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>朝日計畫 - 啟用您的帳戶</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #ff9a56 0%, #ffad70 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .header .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .content h2 {
+            color: #ff8a47;
+            margin-bottom: 20px;
+        }
+        .content p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff9a56 0%, #ffad70 100%);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        .activation-link {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <span class="icon">☀️</span>
+            <h1>朝日計畫</h1>
+            <p>給流浪動物一個溫暖的家</p>
+        </div>
+        
+        <div class="content">
+            <h2>歡迎加入朝日計畫！</h2>
+            
+            <p>親愛的 {{ user.first_name }}，</p>
+            
+            <p>感謝您註冊朝日計畫！我們很高興您決定加入我們的行列，一起為流浪動物創造更美好的未來。</p>
+            
+            <p>為了確保您的帳戶安全，請點擊下方按鈕來啟用您的帳戶：</p>
+            
+            <div style="text-align: center;">
+                <a href="http://{{ domain }}{% url 'auth:activate' uid token %}" class="btn">
+                    🎉 啟用我的帳戶
+                </a>
+            </div>
+            
+            <p>如果按鈕無法點擊，請複製以下連結到您的瀏覽器：</p>
+            <div class="activation-link">
+                http://{{ domain }}{% url 'auth:activate' uid token %}
+            </div>
+            
+            <p>此連結將在24小時後失效，請盡快完成啟用。</p>
+            
+            <p>啟用帳戶後，您就可以：</p>
+            <ul>
+                <li>📝 分享救援動物的故事</li>
+                <li>💬 與其他愛心人士交流</li>
+                <li>🏠 幫助動物找到溫暖的家</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>如果您沒有註冊此帳戶，請忽略此電子郵件。</p>
+            <p>© 2024 朝日計畫. 充滿愛心的動物救援社群</p>
+        </div>
+    </div>
+</body>
+</html>

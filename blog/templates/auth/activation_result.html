@@ -1,0 +1,32 @@
+{% extends 'auth/base_auth.html' %}
+
+{% block title %}帳戶啟用 - 朝日計畫{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 20px 0;">
+        {% if success %}
+            <div style="font-size: 64px; margin-bottom: 20px;">🎉</div>
+            <h2 style="color: hsl(var(--warm-orange-dark)); margin-bottom: 15px;">帳戶啟用成功！</h2>
+            <p style="color: hsl(var(--text-medium)); line-height: 1.6; margin-bottom: 30px;">
+                恭喜！您的帳戶已成功啟用。<br>
+                現在您可以開始使用朝日計畫的所有功能了。
+            </p>
+            <a href="{% url 'blog:blog_list' %}" class="btn-primary" style="width: auto; padding: 12px 24px;">
+                開始探索
+            </a>
+        {% else %}
+            <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
+            <h2 style="color: hsl(0, 60%, 50%); margin-bottom: 15px;">啟用失敗</h2>
+            <p style="color: hsl(var(--text-medium)); line-height: 1.6; margin-bottom: 30px;">
+                很抱歉，啟用連結無效或已過期。<br>
+                請重新註冊或聯繫我們獲得協助。
+            </p>
+            <a href="{% url 'auth:register' %}" class="btn-primary" style="width: auto; padding: 12px 24px; margin-right: 10px;">
+                重新註冊
+            </a>
+            <a href="{% url 'blog:blog_list' %}" style="color: hsl(var(--warm-orange-dark)); text-decoration: none; font-weight: 600;">
+                返回首頁
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

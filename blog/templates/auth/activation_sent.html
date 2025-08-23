@@ -1,0 +1,19 @@
+{% extends 'auth/base_auth.html' %}
+
+{% block title %}確認信已發送 - 朝日計畫{% endblock %}
+{% block subtitle %}請檢查您的電子郵件{% endblock %}
+
+{% block content %}
+    <div style="text-align: center; padding: 20px 0;">
+        <div style="font-size: 64px; margin-bottom: 20px;">📧</div>
+        <h2 style="color: hsl(var(--warm-orange-dark)); margin-bottom: 15px;">確認信已發送！</h2>
+        <p style="color: hsl(var(--text-medium)); line-height: 1.6; margin-bottom: 30px;">
+            我們已向您的電子郵件發送了帳戶啟用連結。<br>
+            請檢查您的收件箱（包括垃圾郵件資料夾），<br>
+            並點擊連結來啟用您的帳戶。
+        </p>
+        <a href="{% url 'blog:blog_list' %}" class="btn-primary" style="width: auto; padding: 12px 24px;">
+            返回首頁
+        </a>
+    </div>
+{% endblock %}

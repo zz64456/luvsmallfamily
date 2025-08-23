@@ -1,0 +1,40 @@
+{% extends 'auth/base_auth.html' %}
+
+{% block title %}登入 - 朝日計畫{% endblock %}
+{% block subtitle %}歡迎回來！{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.username.id_for_label }}">用戶名</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="form-errors">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label" for="{{ form.password.id_for_label }}">密碼</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="form-errors">{{ form.password.errors }}</div>
+            {% endif %}
+        </div>
+        
+        {% if form.non_field_errors %}
+            <div class="form-errors">{{ form.non_field_errors }}</div>
+        {% endif %}
+        
+        <button type="submit" class="btn-primary">
+            🔓 登入
+        </button>
+    </form>
+    
+    <div class="auth-links">
+        <a href="{% url 'auth:register' %}">還沒有帳戶？立即註冊</a>
+        <br><br>
+        <a href="{% url 'blog:blog_list' %}">← 返回首頁</a>
+    </div>
+{% endblock %}
