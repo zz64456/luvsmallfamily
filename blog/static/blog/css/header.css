@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Header Styles - 頂部導航樣式
+   ========================================================================== */
+
+.top-header {
+    background: linear-gradient(135deg, hsl(var(--warm-orange)) 0%, hsl(var(--warm-orange-light)) 100%);
+    color: white;
+    padding: 0;
+    box-shadow: 0 4px 20px hsla(var(--warm-orange), 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 3px solid hsl(var(--warm-orange-dark));
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px var(--spacing-md);
+}
+
+/* Logo 區域 */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+/* 導航菜單 */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: var(--spacing-xs);
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: var(--border-radius-lg);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.nav-menu a:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.nav-menu a.active {
+    background: rgba(255,255,255,0.35);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 手機菜單切換按鈕 */
+.menu-toggle {
+    display: none;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--spacing-xs);
+    transition: all 0.3s ease;
+}
+
+.menu-toggle:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(135deg, hsl(var(--warm-orange)) 0%, hsl(var(--warm-orange-light)) 100%);
+        flex-direction: column;
+        padding: var(--spacing-md);
+        box-shadow: 0 4px 20px hsla(var(--warm-orange), 0.3);
+        border-bottom: 3px solid hsl(var(--warm-orange-dark));
+    }
+    
+    .nav-menu.active {
+        display: flex;
+    }
+    
+    .nav-menu li {
+        margin: 5px 0;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    .header-container {
+        position: relative;
+    }
+}
