@@ -61,13 +61,7 @@ class PostCreateForm(forms.ModelForm):
                 raise forms.ValidationError('影片檔案大小不能超過 50MB')
         return video
 
-    def clean(self):
-        cleaned_data = super().clean()
-        image = cleaned_data.get('image')
-        video = cleaned_data.get('video')
+    # def clean(self):
+    #     cleaned_data = super().clean()
         
-        # 確保不會同時上傳圖片和影片
-        if image and video:
-            raise forms.ValidationError('請只選擇圖片或影片其中一種媒體檔案')
-        
-        return cleaned_data
+    #     return cleaned_data

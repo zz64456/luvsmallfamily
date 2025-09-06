@@ -80,11 +80,23 @@ function createPostHTML(post, postIndex) {
 /**
  * 創建圖片輪播HTML
  */
-function createSwiperHTML(imageUrls, postIndex) {
-    if (imageUrls.length > 1) {
-        const slides = imageUrls.map(url => 
-            `<div class="swiper-slide"><img src="${url}" alt="部落格圖片"></div>`
-        ).join('');
+function createSwiperHTML(mediaUrls, postIndex) {
+    if (mediaUrls.length > 1) {
+        const slides = mediaUrls.map(url => {
+            // 判斷是圖片還是影片
+            if (isVideoUrl(url)) {
+                return `<div class="swiper-slide">
+                    <video controls class="swiper-video">
+                        <source src="${url}" type="video/mp4">
+                        您的瀏覽器不支援影片播放。
+                    </video>
+                </div>`;
+            } else {
+                return `<div class="swiper-slide">
+                    <img src="${url}" alt="部落格圖片" class="swiper-image clickable-image" onclick="openLightbox('${url}')">
+                </div>`;
+            }
+        }).join('');
         
         return `
             <div id="swiper-container-${postIndex}" class="swiper-container">
@@ -93,13 +105,39 @@ function createSwiperHTML(imageUrls, postIndex) {
                 <div class="swiper-button-next swiper-button-next-${postIndex}"></div>
                 <div class="swiper-button-prev swiper-button-prev-${postIndex}"></div>
             </div>`;
-    } else if (imageUrls.length === 1) {
-        return `
-            <div class="swiper-container single-image">
-                <div class="swiper-slide"><img src="${imageUrls[0]}" alt="部落格圖片"></div>
-            </div>`;
+    } else if (mediaUrls.length === 1) {
+        const url = mediaUrls[0];
+        if (isVideoUrl(url)) {
+            return `
+                <div class="swiper-container single-media">
+                    <div class="swiper-slide">
+                        <video controls class="swiper-video">
+                            <source src="${url}" type="video/mp4">
+                            您的瀏覽器不支援影片播放。
+                        </video>
+                    </div>
+                </div>`;
+        } else {
+            return `
+                <div class="swiper-container single-media">
+                    <div class="swiper-slide">
+                        <img src="${url}" alt="部落格圖片" class="swiper-image clickable-image" onclick="openLightbox('${url}')">
+                    </div>
+                </div>`;
+        }
     }
     return '';
+}
+
+/**
+ * 判斷 URL 是否為影片
+ * @param {string} url - 媒體文件 URL
+ * @returns {boolean} 是否為影片
+ */
+function isVideoUrl(url) {
+    const videoExtensions = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.webm', '.mkv'];
+    const urlLower = url.toLowerCase();
+    return videoExtensions.some(ext => urlLower.includes(ext)) || urlLower.includes('/videos/');
 }
 
 /**
@@ -201,6 +239,23 @@ function openFirstAccordionItem(items) {
             content.style.maxHeight = content.scrollHeight + "px";
         }, 100);
     }
+}
+
+/**
+ * 打開圖片燈箱
+ * @param {string} imageUrl - 圖片 URL
+ */
+function openLightbox(imageUrl) {
+    const lightbox = document.getElementById('image-lightbox');
+    const lightboxImage = lightbox?.querySelector('img');
+    
+    if (!lightbox || !lightboxImage) {
+        console.error('燈箱元素未找到');
+        return;
+    }
+    
+    lightboxImage.src = imageUrl;
+    lightbox.style.display = 'flex';
 }
 
 /**
