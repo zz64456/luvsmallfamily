@@ -1,0 +1,300 @@
+{% extends 'auth/base_auth.html' %}
+{% load static %}
+
+{% block title %}發布新文章 - 朝日計畫{% endblock %}
+{% block subtitle %}分享您的愛心故事，幫助更多流浪動物{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-textarea {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid hsl(var(--warm-orange) / 0.2);
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: inherit;
+        resize: vertical;
+        min-height: 150px;
+        transition: border-color 0.3s ease;
+    }
+    
+    .form-textarea:focus {
+        outline: none;
+        border-color: hsl(var(--warm-orange));
+        box-shadow: 0 0 0 3px hsl(var(--warm-orange) / 0.1);
+    }
+    
+    .file-upload-section {
+        background: rgba(255,255,255,0.6);
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px 0;
+        border: 2px dashed hsl(var(--warm-orange) / 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .file-upload-section:hover {
+        border-color: hsl(var(--warm-orange));
+        background: rgba(255,255,255,0.8);
+    }
+    
+    .form-file-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid hsl(var(--warm-orange) / 0.3);
+        border-radius: 8px;
+        background: white;
+        cursor: pointer;
+    }
+    
+    .preview-container {
+        margin-top: 15px;
+        display: none;
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid hsl(var(--warm-orange) / 0.2);
+    }
+    
+    .preview-image {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+    
+    .preview-video {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+    }
+    
+    .file-info {
+        margin-top: 10px;
+        color: hsl(var(--text-medium));
+        font-size: 0.9rem;
+    }
+    
+    .remove-file-btn {
+        background: hsl(0, 60%, 50%);
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        margin-top: 8px;
+    }
+    
+    .remove-file-btn:hover {
+        background: hsl(0, 70%, 45%);
+    }
+    
+    .form-errors {
+        background: hsl(0, 60%, 95%);
+        color: hsl(0, 60%, 40%);
+        padding: 10px;
+        border-radius: 8px;
+        margin: 10px 0;
+        border-left: 4px solid hsl(0, 60%, 50%);
+    }
+    
+    .help-text {
+        color: hsl(var(--text-medium));
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" id="post-form">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+        <div class="form-errors">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+    
+    <!-- 標題欄位 -->
+    <div class="form-group">
+        <label class="form-label" for="{{ form.title.id_for_label }}">
+            📝 {{ form.title.label }}
+        </label>
+        {{ form.title }}
+        {% if form.title.errors %}
+            <div class="form-errors">{{ form.title.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <!-- 內容欄位 -->
+    <div class="form-group">
+        <label class="form-label" for="{{ form.text.id_for_label }}">
+            💭 {{ form.text.label }}
+        </label>
+        {{ form.text }}
+        {% if form.text.errors %}
+            <div class="form-errors">{{ form.text.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <!-- 媒體上傳區域 -->
+    <div class="file-upload-section">
+        <h3 style="color: hsl(var(--warm-orange-dark)); margin-bottom: 15px; font-size: 1.1rem;">
+            📷 添加媒體檔案（選填）
+        </h3>
+        
+        <!-- 圖片上傳 -->
+        <div class="form-group">
+            <label class="form-label" for="{{ form.image.id_for_label }}">
+                🖼️ {{ form.image.label }}
+            </label>
+            {{ form.image }}
+            {% if form.image.help_text %}
+                <div class="help-text">{{ form.image.help_text }}</div>
+            {% endif %}
+            {% if form.image.errors %}
+                <div class="form-errors">{{ form.image.errors }}</div>
+            {% endif %}
+            <div id="image-preview" class="preview-container">
+                <img id="preview-img" class="preview-image" src="" alt="圖片預覽">
+                <div class="file-info" id="image-info"></div>
+                <button type="button" class="remove-file-btn" onclick="removeFile('image')">移除圖片</button>
+            </div>
+        </div>
+        
+        <!-- 影片上傳 -->
+        <div class="form-group">
+            <label class="form-label" for="{{ form.video.id_for_label }}">
+                🎬 {{ form.video.label }}
+            </label>
+            {{ form.video }}
+            {% if form.video.help_text %}
+                <div class="help-text">{{ form.video.help_text }}</div>
+            {% endif %}
+            {% if form.video.errors %}
+                <div class="form-errors">{{ form.video.errors }}</div>
+            {% endif %}
+            <div id="video-preview" class="preview-container">
+                <video id="preview-video" class="preview-video" controls>
+                    <source src="" type="">
+                    您的瀏覽器不支援影片播放。
+                </video>
+                <div class="file-info" id="video-info"></div>
+                <button type="button" class="remove-file-btn" onclick="removeFile('video')">移除影片</button>
+            </div>
+        </div>
+        
+        <p style="color: hsl(var(--text-medium)); font-size: 0.9rem; margin-top: 15px;">
+            💡 提示：您可以上傳一張圖片或一個影片，但不能同時上傳兩種檔案
+        </p>
+    </div>
+    
+    <!-- 提交按鈕 -->
+    <div style="display: flex; gap: 15px; margin-top: 30px;">
+        <button type="submit" class="btn-primary" style="flex: 1;">
+            🚀 發布文章
+        </button>
+        <a href="{% url 'auth:profile' %}" class="btn-primary" style="flex: 1; background: linear-gradient(135deg, hsl(var(--text-medium)) 0%, hsl(var(--text-dark)) 100%); text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
+            ❌ 取消
+        </a>
+    </div>
+</form>
+
+<div class="auth-links" style="margin-top: 30px;">
+    <a href="{% url 'blog:blog_list' %}">← 返回首頁</a>
+    <span style="margin: 0 15px;">|</span>
+    <a href="{% url 'auth:profile' %}">個人資料</a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageInput = document.getElementById('image-upload');
+    const videoInput = document.getElementById('video-upload');
+    const imagePreview = document.getElementById('image-preview');
+    const videoPreview = document.getElementById('video-preview');
+    
+    // 圖片預覽功能
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // 清除影片選擇
+            videoInput.value = '';
+            videoPreview.style.display = 'none';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('preview-img').src = e.target.result;
+                document.getElementById('image-info').textContent = 
+                    `檔案名稱: ${file.name} | 大小: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+                imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.style.display = 'none';
+        }
+    });
+    
+    // 影片預覽功能
+    videoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // 清除圖片選擇
+            imageInput.value = '';
+            imagePreview.style.display = 'none';
+            
+            const videoUrl = URL.createObjectURL(file);
+            const videoElement = document.getElementById('preview-video');
+            const sourceElement = videoElement.querySelector('source');
+            
+            sourceElement.src = videoUrl;
+            sourceElement.type = file.type;
+            videoElement.load();
+            
+            document.getElementById('video-info').textContent = 
+                `檔案名稱: ${file.name} | 大小: ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+            videoPreview.style.display = 'block';
+        } else {
+            videoPreview.style.display = 'none';
+        }
+    });
+});
+
+// 移除檔案功能
+function removeFile(type) {
+    if (type === 'image') {
+        document.getElementById('image-upload').value = '';
+        document.getElementById('image-preview').style.display = 'none';
+    } else if (type === 'video') {
+        document.getElementById('video-upload').value = '';
+        document.getElementById('video-preview').style.display = 'none';
+        // 清理影片 URL
+        const videoElement = document.getElementById('preview-video');
+        const sourceElement = videoElement.querySelector('source');
+        URL.revokeObjectURL(sourceElement.src);
+        sourceElement.src = '';
+        videoElement.load();
+    }
+}
+
+// 表單提交前驗證
+document.getElementById('post-form').addEventListener('submit', function(e) {
+    const title = document.querySelector('#id_title').value.trim();
+    const text = document.querySelector('#id_text').value.trim();
+    
+    if (!title || !text) {
+        e.preventDefault();
+        alert('請填寫標題和內容！');
+        return false;
+    }
+    
+    // 顯示提交中的狀態
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.textContent = '📤 發布中...';
+    submitBtn.disabled = true;
+});
+</script>
+{% endblock %}

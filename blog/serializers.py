@@ -9,16 +9,32 @@ class CommentSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
     image_urls = serializers.SerializerMethodField()
+    author_username = serializers.CharField(source='author.username', read_only=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'text', 'created_at', 'comments', 'image_urls']
+        fields = ['id', 'title', 'text', 'author_username', 'created_at', 'comments', 'image_urls']
         
     def get_image_urls(self, obj):
-        # This is a placeholder. We will need a way to store multiple images for a post.
-        # For now, let's assume we have a way to get them.
-        # This part might need to be adjusted based on how we decide to store post images.
-        return [
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToRaWnAZylIpaZZ4UmVojohhW38rjy31i5qQ&s',
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToRaWnAZylIpaZZ4UmVojohhW38rjy31i5qQ&s',
-        ]
+        """返回文章的實際圖片和影片 URL"""
+        urls = []
+        
+        # 如果有圖片，添加圖片 URL
+        if obj.image:
+            # 構建完整的圖片 URL
+            request = self.context.get('request')
+            if request:
+                urls.append(request.build_absolute_uri(obj.image.url))
+            else:
+                urls.append(obj.image.url)
+        
+        # 如果有影片，添加影片 URL
+        if obj.video:
+            request = self.context.get('request')
+            if request:
+                urls.append(request.build_absolute_uri(obj.video.url))
+            else:
+                urls.append(obj.video.url)
+        
+        # 如果沒有任何媒體文件，返回空列表
+        return urls

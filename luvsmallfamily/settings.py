@@ -64,6 +64,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog', # 新增 blog app
     'rest_framework', # For RESTful APIs
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
 
 # 開發環境額外的應用
@@ -79,6 +84,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # 添加 allauth 必需的中間件
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -183,6 +189,10 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# 檔案上傳限制
+FILE_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 50 * 1024 * 1024  # 50MB
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -241,17 +251,27 @@ if DEBUG:
     INTERNAL_IPS += [ip[:-1] + '1' for ip in ips]
 
 # 電子郵件配置
-if DEBUG:
+if DEBUG and not os.environ.get('TEST_SES', 'False').lower() == 'true':
     # 開發環境：將郵件輸出到控制台
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     # 生產環境：使用真實的SMTP服務器
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
-    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    
+    # AWS SES 配置（推薦）
+    if os.environ.get('USE_SES', 'False').lower() == 'true':
+        EMAIL_HOST = f'email-smtp.{os.environ.get("AWS_REGION", "us-east-1")}.amazonaws.com'
+        EMAIL_PORT = 587
+        EMAIL_USE_TLS = True
+        EMAIL_HOST_USER = os.environ.get('AWS_SES_ACCESS_KEY_ID')
+        EMAIL_HOST_PASSWORD = os.environ.get('AWS_SES_SECRET_ACCESS_KEY')
+    else:
+        # 其他 SMTP 服務器（Gmail, SendGrid 等）
+        EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+        EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+        EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True').lower() == 'true'
+        EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+        EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@luvsmallfamily.com')
 EMAIL_SUBJECT_PREFIX = '[朝日計畫] '

@@ -17,6 +17,12 @@
         <p><strong>最後登入：</strong> {{ user.last_login|date:"Y年m月d日 H:i" }}</p>
     </div>
     
+    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px;">
+        <a href="{% url 'blog:post_create' %}" class="btn-primary" style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);">
+            ✍️ 發布新文章
+        </a>
+    </div>
+    
     <div style="display: flex; gap: 15px; flex-wrap: wrap;">
         <a href="{% url 'auth:profile_edit' %}" class="btn-primary" style="flex: 1; min-width: 120px;">
             ✏️ 編輯資料
