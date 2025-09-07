@@ -1,183 +1,69 @@
-# LuvsmallfamilyProject
+# 朝日計畫 The Asahi Project - Bringing the First Ray of Hope to Stray Animals
 
-一個基於 Django 和 Docker 的現代化網站專案，使用 MySQL 8.0 作為資料庫。
+### Making every act of kindness visible, and every expenditure decided by you.
 
-## 🚀 專案特色
+## Project Overview
 
-- **Django 5.2.4** - 現代化的 Python Web 框架
-- **MySQL 8.0** - 可靠的關聯式資料庫
-- **Docker & Docker Compose** - 容器化部署
-- **Redis** - 快取和會話存儲
-- **Django Debug Toolbar** - 開發環境調試工具
-- **安全配置** - 遵循最佳實踐的安全設定
+The Asahi Project was born from a simple yet profound observation: despite a society full of compassion, donors are often left in the dark about how their contributions are used. This lack of trust prevents more people from participating.
 
-## 📋 系統需求
+Our goal is to use technology to build a **fully transparent and community-driven pet donation platform**. This is more than just a donation system; it's a Proof of Concept (POC) to demonstrate that we can shift **donation decision-making power from centralized organizations to every single donor**.
 
-- Docker 20.10+
-- Docker Compose 1.29+
-- Python 3.11+ (本地開發時)
+We believe that when kindness can be quantified and tracked, and decision-making power returns to supporters, the impact of every donation will be maximized, truly bringing a new dawn of hope to stray animals.
 
-## 🛠️ 快速開始
+## Core Features
 
-### 1. 克隆專案
+* **Donation Transparency**
 
-```bash
-git clone <your-repo-url>
-cd luvsmallfamily
-```
+* **Collective Decision-Making**
 
-### 2. 設置環境變數
+* **Story Sharing**
 
-```bash
-# 複製環境變數範例檔案
-cp .env.example .env
+* **Sustainable Operations**
 
-# 編輯 .env 文件，填入您的實際配置
-# 重要：請勿將 .env 文件提交到版本控制系統！
-```
+## Tech Stack
 
-### 3. 環境變數設定
+* **Backend**: **Python** with the **Django** framework for rapid development of a stable backend service; **MySQL** as a reliable relational database to ensure data integrity; **Django REST Framework** for building a clean API interface.
 
-在 `.env` 文件中設定以下變數：
+* **Frontend**: **HTML**, **CSS**, and **JavaScript** to build a user interface with the most fundamental and flexible tech stack, ensuring the project is lightweight and scalable.
 
-```env
-# Django 設定
-SECRET_KEY=your-unique-secret-key-here
-DEBUG=True
-ALLOWED_HOSTS=localhost,127.0.0.1,0.0.0.0
+* **Containerization**: **Docker** and **Docker Compose** ensure a consistent development, testing, and deployment environment while simplifying complex service dependencies.
 
-# 資料庫設定
-DATABASE_URL=mysql://user:password@db:3306/mydatabase
-MYSQL_ROOT_PASSWORD=your-root-password
-MYSQL_DATABASE=your-database-name
-MYSQL_USER=your-database-user
-MYSQL_PASSWORD=your-database-password
-MYSQL_HOST=db
-MYSQL_PORT=3306
-```
+* **Version Control**: **Git** is used for collaborative development and effective tracking of all code changes.
 
-### 4. 啟動開發環境
+## Visual Showcase
 
-```bash
-# 構建並啟動容器
-docker-compose -f docker-compose.dev.yml up --build
+[Insert your well-crafted GIF or project screenshots here]
 
-# 背景執行
-docker-compose -f docker-compose.dev.yml up -d --build
-```
+## Getting Started
 
-### 5. 執行資料庫遷移
+1.  Clone the repository: `git clone https://github.com/zz64456/luvsmallfamily.git`
 
-```bash
-# 創建資料庫表格
-docker-compose -f docker-compose.dev.yml exec web python manage.py migrate
+2.  Set up the environment: `docker-compose up --build -d`
 
-# 創建超級用戶（可選）
-docker-compose -f docker-compose.dev.yml exec web python manage.py createsuperuser
-```
+3.  Run migrations: `docker-compose exec web python manage.py migrate`
 
-### 6. 訪問應用程式
+4.  Start the server: `docker-compose exec web python manage.py runserver`
 
-- **網站**: http://localhost:8000
-- **管理員介面**: http://localhost:8000/admin
-- **MySQL 資料庫**: localhost:3306
+For more detailed steps, please refer to the [CONTRIBUTING.md](https://www.google.com/search?q=CONTRIBUTING.md) file, which includes a complete guide to environment setup and testing.
 
-## 🔧 開發環境
+## Future Plans
 
-### 查看日誌
+* **Short-term Goal**: We will focus on the **Proof of Concept (POC) phase** by successfully building a functional platform and attracting our first core users to validate the feasibility of our transparency and collective decision-making model.
 
-```bash
-# 查看所有服務日誌
-docker-compose -f docker-compose.dev.yml logs -f
+* **Mid-term Goal**: Once the platform is stable, we will actively explore **advertising and sponsorship models** to ensure the project can be self-sustaining and achieve a monthly revenue target.
 
-# 查看特定服務日誌
-docker-compose -f docker-compose.dev.yml logs -f web
-```
+* **Long-term Vision**: We plan to research and **integrate blockchain technology** to further enhance the transparency and immutability of donations. Additionally, we will develop a **donation leaderboard and a badge system** to gamify the experience and encourage long-term participation.
 
-### 執行 Django 指令
+## How to Contribute
 
-```bash
-# 進入容器
-docker-compose -f docker-compose.dev.yml exec web bash
+The Asahi Project is an open-source initiative, and we believe in the power of collective intelligence.
 
-# 或直接執行指令
-docker-compose -f docker-compose.dev.yml exec web python manage.py shell
-```
+We welcome anyone with a passion for animals and a knack for coding to join us. Whether you want to contribute code, suggest new features, improve the UI/UX design, or help with content creation, feel free to open a Pull Request or create an Issue.
 
-### 停止服務
+## Contact Me
 
-```bash
-docker-compose -f docker-compose.dev.yml down
-```
+* **Project Author**: Neil Chuang
 
-## 📦 生產環境部署
+* **Portfolio/Website**: https://www.linkedin.com/in/luyueh-chuang-5a2a86153/
 
-```bash
-# 使用生產環境配置
-docker-compose up -d --build
-
-# 收集靜態檔案
-docker-compose exec web python manage.py collectstatic --noinput
-```
-
-## 🔒 安全性考量
-
-### 環境變數管理
-
-- ✅ 使用 `.env` 文件管理敏感資訊
-- ✅ `.env` 文件已加入 `.gitignore`
-- ✅ 提供 `.env.example` 範例檔案
-- ✅ Docker Compose 使用環境變數而非硬編碼
-
-### 生產環境安全檢查清單
-
-- [ ] 設定強密碼和複雜的 `SECRET_KEY`
-- [ ] 將 `DEBUG` 設為 `False`
-- [ ] 正確設定 `ALLOWED_HOSTS`
-- [ ] 啟用 HTTPS 和安全標頭
-- [ ] 定期更新依賴項
-- [ ] 使用專用的資料庫用戶
-
-## 🌟 資料庫管理
-
-### 使用 Navicat 連接 MySQL
-
-連接資訊：
-- **主機**: localhost
-- **端口**: 3306
-- **用戶名**: 您在 .env 中設定的 MYSQL_USER
-- **密碼**: 您在 .env 中設定的 MYSQL_PASSWORD
-- **資料庫**: 您在 .env 中設定的 MYSQL_DATABASE
-
-### 資料庫備份
-
-```bash
-# 匯出資料庫
-docker-compose -f docker-compose.dev.yml exec db mysqldump -u root -p mydatabase > backup.sql
-
-# 匯入資料庫
-docker-compose -f docker-compose.dev.yml exec -i db mysql -u root -p mydatabase < backup.sql
-```
-
-## 🤝 貢獻指南
-
-1. Fork 這個專案
-2. 創建您的功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交您的更改 (`git commit -m 'Add some amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 開啟一個 Pull Request
-
-## 📄 許可證
-
-這個專案使用 MIT 許可證。詳情請見 [LICENSE](LICENSE) 文件。
-
-## 📞 聯絡方式
-
-如果您有任何問題或建議，請隨時聯繫：
-
-- 專案連結: [GitHub Repository](https://github.com/yourusername/luvsmallfamily)
-- 個人網站: [Your Website](https://yourwebsite.com)
-
----
-
-⭐ 如果這個專案對您有幫助，請給它一個星星！
+* **Email**: z5202dbc@gmail.com
