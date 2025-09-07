@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import CreateView
+from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -24,12 +25,50 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         # 設定文章作者為當前登入用戶
         form.instance.author = self.request.user
+
+        # 先保存 Post 物件
+        response = super().form_valid(form)
+
+        # 處理媒體檔案上傳
+        self._handle_media_upload(form)
+        
         messages.success(self.request, '🎉 文章發布成功！您的愛心故事已經分享給大家了。')
-        return super().form_valid(form)
+        return response
 
     def form_invalid(self, form):
         messages.error(self.request, '❌ 發布失敗，請檢查表單內容。')
         return super().form_invalid(form)
+
+    def _handle_media_upload(self, form):
+        """處理媒體檔案上傳"""
+        post = form.instance
+        
+        # 處理多張圖片 - 現在可以直接從 cleaned_data 取得
+        images = form.cleaned_data.get('images', [])
+        for i, image_file in enumerate(images):
+            if image_file:  # 確保檔案存在
+                Media.objects.create(
+                    content_type='post',
+                    object_id=post.id,
+                    media_type='image',
+                    file=image_file,
+                    original_filename=image_file.name,
+                    file_size=image_file.size,
+                    order_index=i
+                )
+        
+        # 處理影片（單個檔案）
+        video_file = form.cleaned_data.get('video')
+        if video_file:
+            Media.objects.create(
+                content_type='post',
+                object_id=post.id,
+                media_type='video',
+                file=video_file,
+                original_filename=video_file.name,
+                file_size=video_file.size,
+                order_index=0
+            )
 
 # API Views
 class PostList(generics.ListCreateAPIView):

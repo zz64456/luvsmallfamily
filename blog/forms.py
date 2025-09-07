@@ -4,14 +4,22 @@ from .models import Post, Comment
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        if isinstance(data, (list, tuple)):
+            result = [super(MultipleFileField, self).clean(d, initial) for d in data]
+        else:
+            result = [super(MultipleFileField, self).clean(data, initial)]
+        return result
+
 class PostCreateForm(forms.ModelForm):
     # 添加媒體上傳欄位（不是模型欄位）
-    images = forms.FileField(
+    images = MultipleFileField(
         required=False,
-        widget=MultipleFileInput(attrs={
-            'accept': 'image/*',
-            'class': 'form-file-input'
-        }),
         help_text='支援 JPG, PNG, GIF 格式，可選擇多張圖片，單張最大 10MB'
     )
     
@@ -54,6 +62,9 @@ class PostCreateForm(forms.ModelForm):
     def clean_images(self):
         """驗證圖片檔案"""
         images = self.files.getlist('images')
+        if not isinstance(images, list):
+            images = [images] if images else []
+
         for image in images:
             if image.size > 10 * 1024 * 1024:  # 10MB
                 raise forms.ValidationError(f'圖片 {image.name} 檔案大小不能超過 10MB')
@@ -86,12 +97,8 @@ class CommentCreateForm(forms.ModelForm):
         
         # 只有發文者可以看到媒體上傳欄位
         if self.user and self.post and self.user == self.post.author:
-            self.fields['images'] = forms.FileField(
+            self.fields['images'] = MultipleFileField(
                 required=False,
-                widget=forms.MultipleFileInput(attrs={
-                    'accept': 'image/*',
-                    'class': 'form-file-input'
-                }),
                 help_text='發文者可以上傳多張圖片'
             )
             self.fields['video'] = forms.FileField(
