@@ -1,0 +1,31 @@
+<!-- blog/templates/blog/comment_form.html -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- 留言文字（所有人都可以） -->
+    <div class="form-group">
+        <label>💭 留言內容</label>
+        {{ form.text }}
+    </div>
+    
+    <!-- 媒體上傳（只有發文者可以） -->
+    {% if user == post.author %}
+        <div class="author-media-section">
+            <h4>📸 發文者專屬功能</h4>
+            
+            <div class="form-group">
+                <label>🖼️ 上傳圖片（可多張）</label>
+                {{ form.images }}
+                <div class="help-text">作為發文者，您可以在留言中添加圖片</div>
+            </div>
+            
+            <div class="form-group">
+                <label>🎬 上傳影片（擇一）</label>
+                {{ form.video }}
+                <div class="help-text">⚠️ 圖片和影片只能選擇其中一種</div>
+            </div>
+        </div>
+    {% endif %}
+    
+    <button type="submit">發布留言</button>
+</form>

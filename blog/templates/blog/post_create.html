@@ -58,13 +58,13 @@
         <!-- 圖片上傳 -->
         <div class="form-group">
             <label class="form-label">🖼️ 上傳圖片</label>
-            {{ form.image }}
-            <button type="button" class="file-upload-btn" onclick="document.getElementById('{{ form.image.id_for_label }}').click()">
+            {{ form.images }}
+            <button type="button" class="file-upload-btn" onclick="document.getElementById('{{ form.images.id_for_label }}').click()">
                 📸 選擇圖片
             </button>
             <div class="help-text">支援 JPG, PNG, GIF 格式，最大 10MB</div>
-            {% if form.image.errors %}
-                <div class="form-errors">{{ form.image.errors }}</div>
+            {% if form.images.errors %}
+                <div class="form-errors">{{ form.images.errors }}</div>
             {% endif %}
             
             <!-- 圖片預覽網格 -->

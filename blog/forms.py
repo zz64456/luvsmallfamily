@@ -1,10 +1,32 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
 
 class PostCreateForm(forms.ModelForm):
+    # 添加媒體上傳欄位（不是模型欄位）
+    images = forms.FileField(
+        required=False,
+        widget=MultipleFileInput(attrs={
+            'accept': 'image/*',
+            'class': 'form-file-input'
+        }),
+        help_text='支援 JPG, PNG, GIF 格式，可選擇多張圖片，單張最大 10MB'
+    )
+    
+    video = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'accept': 'video/*',
+            'class': 'form-file-input'
+        }),
+        help_text='支援 MP4, AVI, MOV 格式，最大 50MB'
+    )
+    
     class Meta:
         model = Post
-        fields = ['title', 'text', 'image', 'video']
+        fields = ['title', 'text']  # 只包含 Post 模型的實際欄位
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-input',
@@ -17,51 +39,66 @@ class PostCreateForm(forms.ModelForm):
                 'rows': 8,
                 'required': True
             }),
-            'image': forms.FileInput(attrs={
-                'class': 'form-file-input',
-                'accept': 'image/*',
-                'id': 'image-upload'
-            }),
-            'video': forms.FileInput(attrs={
-                'class': 'form-file-input',
-                'accept': 'video/*',
-                'id': 'video-upload'
-            })
         }
         labels = {
             'title': '文章標題',
             'text': '文章內容',
-            'image': '上傳圖片',
-            'video': '上傳影片'
-        }
-        help_texts = {
-            'image': '支援 JPG, PNG, GIF 格式，最大 10MB',
-            'video': '支援 MP4, AVI, MOV 格式，最大 50MB'
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # 設定必填和選填欄位
+        # 設定必填欄位
         self.fields['title'].required = True
         self.fields['text'].required = True
-        self.fields['image'].required = False
-        self.fields['video'].required = False
 
-    def clean_image(self):
-        image = self.cleaned_data.get('image')
-        if image:
+    def clean_images(self):
+        """驗證圖片檔案"""
+        images = self.files.getlist('images')
+        for image in images:
             if image.size > 10 * 1024 * 1024:  # 10MB
-                raise forms.ValidationError('圖片檔案大小不能超過 10MB')
-        return image
+                raise forms.ValidationError(f'圖片 {image.name} 檔案大小不能超過 10MB')
+        return images
 
     def clean_video(self):
+        """驗證影片檔案"""
         video = self.cleaned_data.get('video')
         if video:
             if video.size > 50 * 1024 * 1024:  # 50MB
                 raise forms.ValidationError('影片檔案大小不能超過 50MB')
         return video
 
-    # def clean(self):
-    #     cleaned_data = super().clean()
+class CommentCreateForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'class': 'form-textarea',
+                'placeholder': '分享您的想法...',
+                'rows': 3
+            })
+        }
+    
+    def __init__(self, *args, **kwargs):
+        self.post = kwargs.pop('post', None)
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
         
-    #     return cleaned_data
+        # 只有發文者可以看到媒體上傳欄位
+        if self.user and self.post and self.user == self.post.author:
+            self.fields['images'] = forms.FileField(
+                required=False,
+                widget=forms.MultipleFileInput(attrs={
+                    'accept': 'image/*',
+                    'class': 'form-file-input'
+                }),
+                help_text='發文者可以上傳多張圖片'
+            )
+            self.fields['video'] = forms.FileField(
+                required=False,
+                widget=forms.FileInput(attrs={
+                    'accept': 'video/*',
+                    'class': 'form-file-input'
+                }),
+                help_text='發文者可以上傳一個影片'
+            )

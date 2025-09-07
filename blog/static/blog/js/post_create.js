@@ -8,7 +8,7 @@ let selectedImages = [];
 let selectedVideo = null;
 
 document.addEventListener('DOMContentLoaded', function() {
-    const imageInput = document.getElementById('id_image');
+    const imageInput = document.getElementById('id_images');
     const videoInput = document.getElementById('id_video');
     const imagePreviewGrid = document.getElementById('image-preview-grid');
     const videoPreviewGrid = document.getElementById('video-preview-grid');
@@ -123,7 +123,7 @@ function removeVideo() {
  */
 function clearImages() {
     selectedImages = [];
-    document.getElementById('id_image').value = '';
+    document.getElementById('id_images').value = '';
     document.getElementById('image-preview-grid').innerHTML = '';
 }
 
@@ -142,7 +142,7 @@ function clearVideo() {
 function updateImageInput() {
     const dt = new DataTransfer();
     selectedImages.forEach(file => dt.items.add(file));
-    document.getElementById('id_image').files = dt.files;
+    document.getElementById('id_images').files = dt.files;
 }
 
 /**
