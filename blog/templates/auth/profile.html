@@ -35,6 +35,13 @@
     <div class="auth-links" style="margin-top: 30px;">
         <a href="{% url 'blog:blog_list' %}">← 返回首頁</a>
         <span style="margin: 0 15px;">|</span>
-        <a href="{% url 'auth:logout' %}" style="color: hsl(0, 60%, 50%);">登出</a>
+        <li>
+            <form method="post" action="{% url 'auth:logout' %}" style="display: inline; margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn nav-logout-btn">
+                    登出
+                </button>
+            </form>
+        </li>
     </div>
 {% endblock %}

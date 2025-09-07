@@ -25,8 +25,15 @@
                     <li><a href="#">部落格</a></li>
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'auth:profile' %}">👤 {{ user.first_name|default:user.username }}</a></li>
-                        <li><a href="{% url 'auth:logout' %}" style="color: rgba(255,255,255,0.8);">登出</a></li>
-                    {% else %}
+                        <li>
+                            <form method="post" action="{% url 'auth:logout' %}" style="display: inline; margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-btn" style="background: none; border: none; color: rgba(255,255,255,0.8); cursor: pointer; font-size: inherit; font-family: inherit; text-decoration: underline;">
+                                    登出
+                                </button>
+                            </form>
+                        </li>
+                        {% else %}
                         <li><a href="{% url 'auth:login' %}">登入</a></li>
                         <li><a href="{% url 'auth:register' %}">註冊</a></li>
                     {% endif %}

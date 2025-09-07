@@ -287,3 +287,34 @@
 .clickable-image:active {
     transform: scale(0.98);
 }
+
+/* 登出按鈕樣式 */
+.logout-btn {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    text-decoration: underline !important;
+    transition: opacity 0.2s ease;
+}
+
+.logout-btn:hover {
+    opacity: 0.7;
+}
+
+.logout-btn:active {
+    opacity: 0.5;
+}
+
+/* 導航欄中的登出按鈕 */
+.nav-logout-btn {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* 個人資料頁面中的登出按鈕 */
+.profile-logout-btn {
+    color: hsl(0, 60%, 50%) !important;
+}
