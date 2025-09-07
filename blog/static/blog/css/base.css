@@ -1,0 +1,95 @@
+/* ==========================================================================
+   Base Styles - 基礎樣式和重置
+   ========================================================================== */
+
+/* 基礎設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg, hsl(var(--warm-cream)) 0%, hsl(var(--soft-pink)) 100%);
+    min-height: 100vh;
+    color: hsl(var(--text-dark));
+}
+
+/* 通用按鈕樣式 */
+.btn-primary {
+    background: linear-gradient(135deg, hsl(var(--warm-orange)) 0%, hsl(var(--warm-orange-light)) 100%);
+    color: white;
+    padding: 18px 36px;
+    border: none;
+    border-radius: var(--border-radius-xl);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-medium);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-strong);
+    background: linear-gradient(135deg, hsl(var(--warm-orange-dark)) 0%, hsl(var(--warm-orange)) 100%);
+}
+
+.btn-primary span {
+    font-size: 18px;
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.9);
+    color: hsl(var(--warm-orange-dark));
+    padding: 18px 36px;
+    border: 3px solid hsl(var(--warm-orange));
+    border-radius: var(--border-radius-xl);
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary:hover {
+    background: hsl(var(--warm-orange));
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* 容器樣式 */
+.container {
+    max-width: 90%;
+    margin: 0 auto 40px;
+    padding: var(--spacing-lg);
+    background: rgba(255,255,255,0.95);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 8px 30px hsla(var(--warm-orange), 0.15);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .container {
+        max-width: 95%;
+        padding: var(--spacing-md);
+    }
+    
+    .btn-primary, 
+    .btn-secondary {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+    }
+}

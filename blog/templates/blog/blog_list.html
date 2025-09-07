@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>朝日計畫</title>
+    <!-- 引入 Swiper.js 的 CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!-- 引入自定義CSS文件 -->
+    <link rel="stylesheet" href="{% static 'blog/css/main.css' %}">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">☀️</div>
+                <h1>朝日計畫</h1>
+            </div>
+            <nav>
+                <ul class="nav-menu" id="nav-menu">
+                    <li><a href="{% url 'blog:blog_list' %}" class="active">首頁</a></li>
+                    <li><a href="#">關於我們</a></li>
+                    <li><a href="#">部落格</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'auth:profile' %}">👤 {{ user.first_name|default:user.username }}</a></li>
+                        <li>
+                            <form method="post" action="{% url 'auth:logout' %}" style="display: inline; margin: 0;">
+                                {% csrf_token %}
+                                <button type="submit" class="logout-btn" style="background: none; border: none; color: rgba(255,255,255,0.8); cursor: pointer; font-size: inherit; font-family: inherit; text-decoration: underline;">
+                                    登出
+                                </button>
+                            </form>
+                        </li>
+                        {% else %}
+                        <li><a href="{% url 'auth:login' %}">登入</a></li>
+                        <li><a href="{% url 'auth:register' %}">註冊</a></li>
+                    {% endif %}
+                </ul>
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-badge">
+                <span>🐾</span>
+                <span>透明 • 專業 • 循環</span>
+            </div>
+            <h1 class="hero-title">
+                想幫助可愛的牠們
+            </h1>
+            
+            <!-- 三個希望 - 排比句式 -->
+            <div class="hero-vision">
+                <div class="vision-intro">但又希望...</div>
+                <div class="vision-list">
+                    <div class="vision-item">
+                        每一筆金額能被正確使用
+                    </div>
+                    <div class="vision-item">
+                        每一項物資能被實際運用
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 核心理念 -->
+            <div class="hero-concept">
+                <p class="concept-line">
+                    <span class="concept-emphasis">救援交給專業</span>，
+                    <span class="concept-emphasis">支出我們一起負擔</span>
+                </p>
+                <p class="concept-detail">
+                    簡單的費用明細、動物照影片的後續追蹤，<br>
+                    <span class="concept-goal">共同達成可愛善循環</span>
+                </p>
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">
+                    <span>💝</span>
+                    參與善循環
+                </a>
+                <a href="#" class="btn-secondary">
+                    查看費用明細
+                </a>
+            </div>
+            
+            <!-- 本週數據 -->
+            <div class="stats-grid">
+                <div class="stat-item stat-highlight">
+                    <div class="stat-number">NT$33,550</div>
+                    <div class="stat-label">本週支出補貼總計</div>
+                </div>
+                <div class="stat-item stat-highlight">
+                    <div class="stat-number">7隻</div>
+                    <div class="stat-label">本週救助動物</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">資金透明度</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container" id="post-container">
+        <!-- Posts will be dynamically inserted here -->
+    </div>
+
+    <!-- Lightbox for comment images -->
+    <div id="image-lightbox">
+        <img src="" alt="放大的留言圖片">
+    </div>
+
+    <!-- 引入 Swiper.js 的 JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- 引入自定義JavaScript文件 -->
+    <script src="{% static 'blog/js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,322 @@
+/* 發文頁面專用樣式 */
+
+:root {
+    --warm-orange: 32 97% 60%;
+    --warm-orange-light: 32 97% 70%;
+    --warm-orange-dark: 32 97% 50%;
+    --warm-orange-pale: 32 50% 95%;
+    --warm-peach: 25 100% 85%;
+    --warm-cream: 45 100% 97%;
+    --soft-pink: 350 100% 95%;
+    --text-dark: 20 20% 20%;
+    --text-medium: 20 15% 40%;
+    --text-light: 20 10% 60%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, hsl(var(--warm-cream)) 0%, hsl(var(--soft-pink)) 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: hsl(var(--text-dark));
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.95);
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px hsla(var(--warm-orange), 0.2);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    color: hsl(var(--warm-orange-dark));
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.header p {
+    color: hsl(var(--text-medium));
+    font-size: 1.1rem;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: hsl(var(--text-dark));
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.form-input, .form-textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid hsl(var(--warm-orange) / 0.2);
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: rgba(255,255,255,0.8);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: hsl(var(--warm-orange));
+    box-shadow: 0 0 0 4px hsl(var(--warm-orange) / 0.1);
+    background: white;
+}
+
+/* 現代化文件上傳區域 */
+.upload-section {
+    background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 100%);
+    padding: 30px;
+    border-radius: 20px;
+    margin: 30px 0;
+    border: 2px dashed hsl(var(--warm-orange) / 0.3);
+    transition: all 0.3s ease;
+}
+
+.upload-section:hover {
+    border-color: hsl(var(--warm-orange));
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
+    transform: translateY(-2px);
+}
+
+.upload-section h3 {
+    color: hsl(var(--warm-orange-dark));
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+/* 隱藏原生文件輸入 */
+.file-input-hidden {
+    display: none;
+}
+
+/* 自定義文件上傳按鈕 */
+.file-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, hsl(var(--warm-orange)) 0%, hsl(var(--warm-orange-light)) 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px hsla(var(--warm-orange), 0.3);
+}
+
+.file-upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px hsla(var(--warm-orange), 0.4);
+}
+
+.file-upload-btn:active {
+    transform: translateY(0);
+}
+
+/* 圖片預覽網格 */
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.preview-item {
+    position: relative;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.preview-item:hover {
+    transform: translateY(-3px);
+}
+
+.preview-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.preview-video {
+    width: 100%;
+    height: 200px;
+    border-radius: 12px;
+}
+
+/* 現代化移除按鈕 */
+.remove-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.9);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #ff4757;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.remove-btn:hover {
+    background: #ff4757;
+    color: white;
+    transform: scale(1.1);
+}
+
+.file-info {
+    padding: 10px;
+    font-size: 0.9rem;
+    color: hsl(var(--text-medium));
+    background: rgba(255,255,255,0.8);
+}
+
+/* 提交按鈕 */
+.btn-primary {
+    background: linear-gradient(135deg, hsl(var(--warm-orange)) 0%, hsl(var(--warm-orange-light)) 100%);
+    color: white;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px hsla(var(--warm-orange), 0.3);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px hsla(var(--warm-orange), 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, hsl(var(--text-medium)) 0%, hsl(var(--text-dark)) 100%);
+    color: white;
+    border: none;
+    padding: 18px 35px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.button-group > * {
+    flex: 1;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.auth-links a {
+    color: hsl(var(--warm-orange-dark));
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: hsl(var(--warm-orange));
+}
+
+.form-errors {
+    background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
+    color: #cc0000;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 15px 0;
+    border-left: 4px solid #ff4757;
+    font-weight: 500;
+}
+
+.help-text {
+    color: hsl(var(--text-medium));
+    font-size: 0.9rem;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .container {
+        margin: 10px;
+        padding: 25px;
+        max-width: none;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .preview-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+}

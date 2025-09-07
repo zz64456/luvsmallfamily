@@ -1,0 +1,356 @@
+/* ==========================================================================
+   Hero Section Styles - 主要展示區樣式
+   ========================================================================== */
+
+.hero-section {
+    background: linear-gradient(135deg, hsl(var(--warm-orange-pale)) 0%, hsl(var(--warm-peach)) 100%);
+    padding: 80px var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="hsl(32 97% 60%)" opacity="0.1"/><circle cx="20" cy="20" r="1" fill="hsl(32 97% 70%)" opacity="0.15"/><circle cx="80" cy="30" r="1.5" fill="hsl(32 97% 60%)" opacity="0.1"/><circle cx="30" cy="80" r="1" fill="hsl(32 97% 70%)" opacity="0.15"/><circle cx="70" cy="70" r="2" fill="hsl(32 97% 60%)" opacity="0.1"/></svg>') repeat;
+    pointer-events: none;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Badge */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: hsl(var(--warm-orange-dark));
+    font-weight: 600;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,0.7);
+    padding: var(--spacing-sm) 24px;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.hero-badge span:first-child {
+    font-size: 20px;
+}
+
+/* Hero Title */
+.hero-title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: hsl(var(--text-dark));
+    line-height: 1.15;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.hero-title .highlight {
+    color: hsl(var(--warm-orange));
+    position: relative;
+}
+
+.hero-title .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(90deg, hsl(var(--warm-orange-light)), hsl(var(--warm-orange)));
+    border-radius: 4px;
+    opacity: 0.3;
+}
+
+/* Hero Vision - 三個希望的排比句式 */
+.hero-vision {
+    margin: 40px auto 35px;
+    max-width: 800px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.vision-intro {
+    font-size: 1.6rem;
+    color: hsl(var(--text-medium));
+    font-weight: 400;
+    font-style: italic;
+    position: relative;
+    flex-shrink: 0;
+    text-align: center;
+    min-width: 200px;
+}
+
+.vision-intro::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, hsl(var(--warm-orange)), transparent);
+    border-radius: 2px;
+}
+
+.vision-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.vision-item {
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.6);
+    border-radius: var(--border-radius-md);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 1.25rem;
+    color: hsl(var(--text-dark));
+    font-weight: 500;
+    border-left: 4px solid hsl(var(--warm-orange));
+    position: relative;
+}
+
+.vision-item::before {
+    content: '✓';
+    position: absolute;
+    left: -2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: hsl(var(--warm-orange));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.vision-item:hover {
+    background: rgba(255,255,255,0.8);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+    border-left-width: 6px;
+    padding-left: 32px;
+}
+
+.vision-item:hover::before {
+    opacity: 1;
+    left: 6px;
+}
+
+/* Hero Concept - 核心理念區塊 */
+.hero-concept {
+    margin: 35px auto 45px;
+    max-width: 700px;
+    padding: 25px 30px;
+    background: rgba(255,255,255,0.7);
+    border-radius: var(--border-radius-lg);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.4);
+    box-shadow: var(--shadow-soft);
+}
+
+.concept-line {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.concept-emphasis {
+    color: hsl(var(--warm-orange-dark));
+    font-weight: 700;
+    position: relative;
+}
+
+.concept-detail {
+    font-size: 1.1rem;
+    color: hsl(var(--text-medium));
+    line-height: 1.6;
+    text-align: center;
+    margin: 0;
+}
+
+.concept-goal {
+    color: hsl(var(--warm-orange));
+    font-weight: 600;
+    font-size: 1.15rem;
+}
+
+/* Hero Buttons */
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 60px;
+    align-items: center;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-xl);
+    padding-top: var(--spacing-xl);
+    border-top: 3px solid hsla(var(--warm-orange), 0.3);
+}
+
+.stat-item {
+    text-align: center;
+    background: rgba(255,255,255,0.8);
+    padding: 25px var(--spacing-md);
+    border-radius: var(--spacing-md);
+    box-shadow: 0 6px 20px hsla(var(--warm-orange), 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px hsla(var(--warm-orange), 0.25);
+}
+
+.stat-number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: hsl(var(--warm-orange));
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: hsl(var(--text-medium));
+    font-weight: 600;
+}
+
+/* 特別強調的統計項目（本週數據） */
+.stat-highlight {
+    background: linear-gradient(135deg, hsl(var(--warm-orange-pale)), hsl(var(--warm-peach)));
+    border: 3px solid hsl(var(--warm-orange));
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-highlight::before {
+    content: '本週';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: hsl(var(--warm-orange));
+    color: white;
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.stat-highlight .stat-number {
+    color: hsl(var(--warm-orange-dark));
+    font-size: 2.2rem;
+}
+
+.stat-highlight .stat-label {
+    color: hsl(var(--warm-orange-dark));
+    font-weight: 700;
+}
+
+/* 響應式設計 */
+@media (min-width: 640px) {
+    .hero-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .hero-title {
+        font-size: 4.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .hero-section {
+        padding: 60px var(--spacing-md);
+    }
+    
+    /* 手機版調整 */
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-vision {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+    
+    .vision-intro {
+        font-size: 1.3rem;
+        min-width: auto;
+    }
+    
+    .vision-item {
+        font-size: 1.1rem;
+        padding: 14px 20px;
+    }
+    
+    .vision-item:hover {
+        padding-left: 28px;
+    }
+    
+    .vision-item:hover::before {
+        left: 4px;
+    }
+    
+    .concept-line {
+        font-size: 1.2rem;
+    }
+    
+    .concept-detail {
+        font-size: 1rem;
+    }
+    
+    .hero-concept {
+        padding: 20px 25px;
+    }
+    
+    .stat-highlight::before {
+        top: 6px;
+        right: 6px;
+        font-size: 0.6rem;
+        padding: 3px 6px;
+    }
+}

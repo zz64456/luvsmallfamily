@@ -1,0 +1,320 @@
+/* ==========================================================================
+   Blog Content Styles - 部落格內容樣式
+   ========================================================================== */
+
+/* Post Cards */
+.post {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-bottom: 50px;
+    padding: var(--spacing-lg);
+    background: rgba(255,255,255,0.9);
+    border-radius: var(--spacing-md);
+    box-shadow: 0 6px 25px hsla(var(--warm-orange), 0.12);
+    overflow: hidden;
+    border: 2px solid hsla(var(--warm-orange), 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.post::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, hsl(var(--warm-orange)), hsl(var(--warm-orange-light)));
+}
+
+.post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px hsla(var(--warm-orange), 0.2);
+    border-color: hsla(var(--warm-orange), 0.3);
+}
+
+.post-media {
+    width: 100%;
+    flex: 0 0 50%;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.post-content {
+    flex: 1;
+}
+
+.post-content p {
+    color: hsl(var(--text-medium));
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+
+/* Swiper 樣式 */
+.swiper-container {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 15px;
+    position: relative;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: 0 6px 20px hsla(var(--warm-orange), 0.2);
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+.swiper-pagination-bullet {
+    background: hsl(var(--warm-orange)) !important;
+    opacity: 0.7;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: hsl(var(--warm-orange)) !important;
+    background: rgba(255,255,255,0.9);
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50%;
+    box-shadow: var(--shadow-soft);
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 16px !important;
+    font-weight: 700;
+}
+
+/* 在 blog/static/blog/css/blog.css 或相關 CSS 文件中添加 */
+
+.swiper-video {
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.swiper-image {
+    width: 100%;
+    height: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.single-media {
+    max-width: 100%;
+}
+
+.single-media .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Comment Section */
+.comment-section {
+    margin-top: var(--spacing-lg);
+}
+
+.comment-section h3 {
+    color: hsl(var(--warm-orange-dark));
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.comment-section h3::before {
+    content: '💭';
+    font-size: 1.2rem;
+}
+
+/* Accordion */
+.accordion-item {
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    background: rgba(255,255,255,0.8);
+    border: 2px solid hsla(var(--warm-orange), 0.1);
+    transition: all 0.3s ease;
+}
+
+.accordion-item:hover {
+    border-color: hsla(var(--warm-orange), 0.3);
+    box-shadow: var(--shadow-soft);
+}
+
+.accordion-item .accordion-header {
+    background: linear-gradient(135deg, hsl(var(--warm-orange-pale)), hsl(var(--warm-peach)));
+    cursor: pointer;
+    padding: var(--spacing-md) 24px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: hsl(var(--warm-orange-dark));
+    position: relative;
+}
+
+.accordion-item .accordion-header::after {
+    content: '📅';
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
+
+.accordion-item.active .accordion-header, 
+.accordion-item .accordion-header:hover {
+    background: linear-gradient(135deg, hsl(var(--warm-orange)), hsl(var(--warm-orange-light)));
+    color: white;
+    transform: translateY(-1px);
+}
+
+.accordion-item .accordion-content {
+    padding: 0 24px;
+    background: rgba(255,255,255,0.95);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.accordion-content p {
+    padding: var(--spacing-md) 0;
+    margin: 0;
+    color: hsl(var(--text-medium));
+    line-height: 1.6;
+}
+
+.accordion-content img {
+    max-width: 100%;
+    margin: var(--spacing-md) 0;
+    cursor: pointer;
+    border-radius: var(--spacing-sm);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.accordion-content img:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Image Lightbox */
+#image-lightbox {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.9));
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#image-lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); }
+    to { transform: scale(1); }
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .post {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+    
+    .post-media {
+        flex: none;
+    }
+    
+    .swiper-container {
+        height: 250px;
+    }
+}
+
+/* 可點擊圖片樣式 */
+.clickable-image {
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.clickable-image:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+.clickable-image:active {
+    transform: scale(0.98);
+}
+
+/* 登出按鈕樣式 */
+.logout-btn {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    text-decoration: underline !important;
+    transition: opacity 0.2s ease;
+}
+
+.logout-btn:hover {
+    opacity: 0.7;
+}
+
+.logout-btn:active {
+    opacity: 0.5;
+}
+
+/* 導航欄中的登出按鈕 */
+.nav-logout-btn {
+    color: rgba(255,255,255,0.8) !important;
+}
+
+/* 個人資料頁面中的登出按鈕 */
+.profile-logout-btn {
+    color: hsl(0, 60%, 50%) !important;
+}

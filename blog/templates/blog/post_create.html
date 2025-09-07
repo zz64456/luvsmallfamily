@@ -1,0 +1,115 @@
+{% extends 'auth/base_auth.html' %}
+{% load static %}
+
+{% block title %}發布新文章 - 朝日計畫{% endblock %}
+{% block subtitle %}分享您的愛心故事，幫助更多流浪動物{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'blog/css/post_create.css' %}">
+<style>
+    /* 覆蓋基礎模板的容器寬度 */
+    .auth-container {
+        max-width: 800px !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>📝 發布新文章</h1>
+    <p>分享您的愛心故事，幫助更多流浪動物找到溫暖的家</p>
+</div>
+
+<form method="post" enctype="multipart/form-data" id="post-form">
+    {% csrf_token %}
+    
+    {% if form.non_field_errors %}
+        <div class="form-errors">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+    
+    <!-- 標題欄位 -->
+    <div class="form-group">
+        <label class="form-label" for="{{ form.title.id_for_label }}">
+            📝 {{ form.title.label }}
+        </label>
+        {{ form.title }}
+        {% if form.title.errors %}
+            <div class="form-errors">{{ form.title.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <!-- 內容欄位 -->
+    <div class="form-group">
+        <label class="form-label" for="{{ form.text.id_for_label }}">
+            💭 {{ form.text.label }}
+        </label>
+        {{ form.text }}
+        {% if form.text.errors %}
+            <div class="form-errors">{{ form.text.errors }}</div>
+        {% endif %}
+    </div>
+    
+    <!-- 媒體上傳區域 -->
+    <div class="upload-section">
+        <h3>📷 添加媒體檔案（選填）</h3>
+        
+        <!-- 圖片上傳 -->
+        <div class="form-group">
+            <label class="form-label">🖼️ 上傳圖片</label>
+            {{ form.images }}
+            <button type="button" class="file-upload-btn" onclick="document.getElementById('{{ form.images.id_for_label }}').click()">
+                📸 選擇圖片
+            </button>
+            <div class="help-text">支援 JPG, PNG, GIF 格式，最大 10MB</div>
+            {% if form.images.errors %}
+                <div class="form-errors">{{ form.images.errors }}</div>
+            {% endif %}
+            
+            <!-- 圖片預覽網格 -->
+            <div id="image-preview-grid" class="preview-grid"></div>
+        </div>
+        
+        <!-- 影片上傳 -->
+        <div class="form-group">
+            <label class="form-label">🎬 上傳影片</label>
+            {{ form.video }}
+            <button type="button" class="file-upload-btn" onclick="document.getElementById('{{ form.video.id_for_label }}').click()">
+                🎥 選擇影片
+            </button>
+            <div class="help-text">支援 MP4, AVI, MOV 格式，最大 50MB</div>
+            {% if form.video.errors %}
+                <div class="form-errors">{{ form.video.errors }}</div>
+            {% endif %}
+            
+            <!-- 影片預覽 -->
+            <div id="video-preview-grid" class="preview-grid"></div>
+        </div>
+        
+        <p class="help-text" style="text-align: center; margin-top: 20px;">
+            💡 提示：您可以同時上傳圖片和影片來豐富您的文章內容
+        </p>
+    </div>
+    
+    <!-- 提交按鈕 -->
+    <div class="button-group">
+        <button type="submit" class="btn-primary">
+            🚀 發布文章
+        </button>
+        <a href="{% url 'auth:profile' %}" class="btn-secondary">
+            ❌ 取消
+        </a>
+    </div>
+</form>
+
+<div class="auth-links">
+    <a href="{% url 'blog:blog_list' %}">← 返回首頁</a>
+    <span style="margin: 0 15px;">|</span>
+    <a href="{% url 'auth:profile' %}">個人資料</a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'blog/js/post_create.js' %}"></script>
+{% endblock %}

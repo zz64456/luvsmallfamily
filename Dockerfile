@@ -1,5 +1,5 @@
 # Dockerfile
-FROM python:3.11-slim-buster
+FROM python:3.11-slim-bullseye
 
 ENV PYTHONUNBUFFERED 1
 

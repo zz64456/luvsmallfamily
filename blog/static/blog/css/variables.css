@@ -1,0 +1,39 @@
+/* ==========================================================================
+   CSS Variables - 朝日計畫主題配色
+   ========================================================================== */
+
+:root {
+    /* Warm Orange 主色系 */
+    --warm-orange: 32 97% 60%;
+    --warm-orange-light: 32 97% 70%;
+    --warm-orange-dark: 32 97% 50%;
+    --warm-orange-pale: 32 50% 95%;
+    
+    /* 輔助色彩 */
+    --warm-peach: 25 100% 85%;
+    --warm-cream: 45 100% 97%;
+    --soft-pink: 350 100% 95%;
+    
+    /* 文字色彩 */
+    --text-dark: 20 20% 20%;
+    --text-medium: 20 15% 40%;
+    --text-light: 20 10% 60%;
+    
+    /* 陰影和效果 */
+    --shadow-soft: 0 4px 15px hsla(var(--warm-orange), 0.2);
+    --shadow-medium: 0 6px 25px hsla(var(--warm-orange), 0.3);
+    --shadow-strong: 0 10px 35px hsla(var(--warm-orange), 0.4);
+    
+    /* 邊框圓角 */
+    --border-radius-sm: 8px;
+    --border-radius-md: 15px;
+    --border-radius-lg: 25px;
+    --border-radius-xl: 30px;
+    
+    /* 間距 */
+    --spacing-xs: 8px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 40px;
+}

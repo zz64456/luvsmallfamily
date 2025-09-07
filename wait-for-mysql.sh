@@ -44,6 +44,12 @@ while retry_count < max_retries:
 EOF
 
 if [ $? -eq 0 ]; then
+    echo "📝 執行資料庫遷移..."
+    python manage.py migrate
+    
+    echo "🌱 載入初始資料..."
+    python manage.py seed_data
+    
     echo "🚀 啟動 Django 開發伺服器..."
     python manage.py runserver 0.0.0.0:8000
 else

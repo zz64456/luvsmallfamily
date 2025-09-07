@@ -1,5 +1,5 @@
 # Dockerfile.dev - 開發環境專用
-FROM python:3.11-slim-buster
+FROM python:3.11-slim-bullseye
 
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -31,5 +31,4 @@ COPY . /app/
 # 開放端口
 EXPOSE 8000
 
-# 開發環境使用 Django 開發伺服器
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"] 
+# 注意：實際啟動命令由 docker-compose.dev.yml 中的 command 指定 

@@ -1,0 +1,17 @@
+# Core Dependencies
+Django>=5.0,<6.0
+dj_database_url>=2.0,<3.0
+python-dotenv>=1.0,<2.0
+
+# Database Driver
+PyMySQL>=1.1,<1.2
+
+# WSGI Server for Production
+gunicorn>=21.0,<22.0
+
+# Google gemini API
+google-auth==2.40.3
+google-genai==1.26.0
+
+# Line Messaging API
+line-bot-sdk==3.17.1
